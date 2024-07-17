@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.mxue.printing.service.mapper.TbPrintfInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="xyz.mxue.printing.service.entity.TbPrintfInfo">
+        <id column="id" property="id" />
+        <result column="order_id" property="orderId" />
+        <result column="amount" property="amount" />
+        <result column="printf_money" property="printfMoney" />
+        <result column="pages_number" property="pagesNumber" />
+        <result column="printf_number" property="printfNumber" />
+        <result column="file_name" property="fileName" />
+        <result column="single_double_sided" property="singleDoubleSided" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <select id="queryPrintfInfos" resultType="xyz.mxue.printing.service.entity.TbPrintfInfo">
+        SELECT * FROM tb_printf_info WHERE order_id = #{orderId}
+    </select>
+
+</mapper>

@@ -1,0 +1,22 @@
+server:
+  port: 9999
+  servlet:
+    session:
+      timeout: P10D
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+
+spring:
+  application:
+    name: printing-service
+  profiles:
+    active: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/printing?useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+  jackson:
+    date-format: yyyy-MM-dd HH:mm
+    time-zone: GMT+8

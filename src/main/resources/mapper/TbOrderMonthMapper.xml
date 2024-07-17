@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.mxue.printing.service.mapper.TbOrderMonthMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="xyz.mxue.printing.service.entity.TbOrderMonth">
+        <id column="id" property="id" />
+        <result column="stats_month" property="statsMonth" />
+        <result column="printf_number" property="printfNumber" />
+        <result column="total_amount" property="totalAmount" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+</mapper>
