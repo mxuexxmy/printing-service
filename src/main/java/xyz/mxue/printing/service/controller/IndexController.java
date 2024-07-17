@@ -1,6 +1,7 @@
 package xyz.mxue.printing.service.controller;
 
 import cn.hutool.core.date.DateUtil;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,7 @@ public class IndexController {
     @Resource
     private TbStatisticsService statisticsService;
 
+    @ApiOperation(value = "首页汇总")
     @GetMapping("/index")
     public Map<String, IndexInfoVO> indexView() {
         IndexInfoVO indexInfoVO = new IndexInfoVO();
