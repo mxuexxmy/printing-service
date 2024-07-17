@@ -8,11 +8,16 @@ import java.io.Serializable;
  * @date 12/6/2020$ 11:26 PM$
  */
 public class Result implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     public static final int STATUS_SUCCESS = 200;
     public static final int STATUS_FAIL = 500;
 
     private int status;
+
     private String message;
+
 
     public static Result success() {
         return Result.createResult(STATUS_SUCCESS, "成功");
@@ -56,4 +61,5 @@ public class Result implements Serializable {
         Result.setMessage(message);
         return Result;
     }
+
 }
