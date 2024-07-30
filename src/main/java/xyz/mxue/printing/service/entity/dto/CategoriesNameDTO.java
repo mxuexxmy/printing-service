@@ -1,19 +1,22 @@
 package xyz.mxue.printing.service.entity.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
  * @author mxuexxmy
- * @date 3/15/2021$ 11:53 PM$
+ * @since 1.0.0
  */
 @Data
 public class CategoriesNameDTO implements Serializable {
 
     private static final long serialVersionUID=1L;
 
+    @ApiModelProperty(value = "分类ID")
     private Long categoriesId;
 
+    @ApiModelProperty(value = "分类名称")
     private String categoriesName;
 }

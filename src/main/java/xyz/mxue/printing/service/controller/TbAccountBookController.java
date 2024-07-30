@@ -1,5 +1,7 @@
 package xyz.mxue.printing.service.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import xyz.mxue.printing.service.common.model.PageInfo;
@@ -22,6 +24,7 @@ import java.util.*;
  * @author mxuexxmy
  * @since 2021-03-14
  */
+@Api(tags = "记账管理")
 @RestController
 @RequestMapping("/printing/tb-account-book")
 public class TbAccountBookController {
@@ -29,49 +32,49 @@ public class TbAccountBookController {
     @Resource
     private TbAccountBookService accountBookService;
 
+    @ApiOperation(value = "记账分类")
     @GetMapping("/")
-    public Map<String, List<CategoriesNameDTO>> index() {
-        Map<String, List<CategoriesNameDTO>> map = new HashMap<>();
-        map.put("categories", accountBookService.categoriesNames());
-        return map;
+    public Result<List<CategoriesNameDTO>> index() {
+        return Result.success(accountBookService.categoriesNames());
     }
 
+    @ApiOperation(value = "添加分类")
     @GetMapping("/add-account")
-    public Map<String, List<CategoriesNameDTO>> addAccount() {
-        Map<String, List<CategoriesNameDTO>> map = new HashMap<>();
-        map.put("categories", accountBookService.categoriesNames());
-        return map;
+    public Result<List<CategoriesNameDTO>> addAccount() {
+        return Result.success(accountBookService.categoriesNames());
     }
 
+    @ApiOperation(value = "保持账单")
     @PostMapping("/save-account")
-    public Result saveAccount(@RequestBody TbAccountBook tbAccountBook) {
+    public Result<Boolean> saveAccount(@RequestBody TbAccountBook tbAccountBook) {
         tbAccountBook.setCreateTime(new Date());
         tbAccountBook.setUpdateTime(new Date());
         boolean save = accountBookService.save(tbAccountBook);
-        return save ? Result.success("添加账单成功!") : Result.fail("添加账单失败，请重试！");
+        return save ? Result.success("添加账单成功!", true) : Result.fail("添加账单失败，请重试！", false);
     }
 
+    @ApiOperation(value = "查询需要更新的账单")
     @GetMapping("/update/{id}")
-    public Map<String, AccountUpdateDTO> update(@PathVariable Long id) {
-        Map<String, AccountUpdateDTO> map = new HashMap<>();
-        map.put("accountUpdateDTO", accountBookService.accountUpdate(id));
-        return map;
+    public Result<AccountUpdateDTO> update(@PathVariable Long id) {
+        return Result.success(accountBookService.accountUpdate(id));
     }
 
+    @ApiOperation(value = "更新账单")
     @PostMapping("/save-update")
-    public Result saveUpdate(@RequestBody TbAccountBook tbAccountBook) {
+    public Result<Boolean> saveUpdate(@RequestBody TbAccountBook tbAccountBook) {
         tbAccountBook.setUpdateTime(new Date());
         boolean b = accountBookService.saveOrUpdate(tbAccountBook);
-        return b ? Result.success("修改账单消息成功！") : Result.fail("修改账单消息失败！");
+        return b ? Result.success("修改账单消息成功！", true) : Result.fail("修改账单消息失败！", false);
     }
 
+    @ApiOperation(value = "删除账单")
     @GetMapping("/delete/{id}")
-    public Result deleteOrder(@PathVariable Long id, ModelMap map) {
+    public Result<Boolean> deleteOrder(@PathVariable Long id) {
         boolean b = accountBookService.removeById(id);
         if (b) {
-            return Result.success("序号" + id + "的账单删除成功!");
+            return Result.success("序号" + id + "的账单删除成功!", true);
         }
-        return Result.fail("序号" + id + "的账单删除失败!");
+        return Result.fail("序号" + id + "的账单删除失败!", false);
     }
 
     @GetMapping("/page")

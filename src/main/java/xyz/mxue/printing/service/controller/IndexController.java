@@ -1,10 +1,12 @@
 package xyz.mxue.printing.service.controller;
 
 import cn.hutool.core.date.DateUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.mxue.printing.service.common.model.Result;
 import xyz.mxue.printing.service.entity.vo.IndexInfoVO;
 import xyz.mxue.printing.service.service.TbPrintOrderService;
 import xyz.mxue.printing.service.service.TbStatisticsService;
@@ -17,8 +19,9 @@ import java.util.Map;
 
 /**
  * @author mxuexxmy
- * @date 12/6/2020$ 8:55 PM
+ * @since 1.0.0
  */
+@Api(tags = "首页信息")
 @RestController
 @RequestMapping
 public class IndexController {
@@ -31,7 +34,7 @@ public class IndexController {
 
     @ApiOperation(value = "首页汇总")
     @GetMapping("/index")
-    public Map<String, IndexInfoVO> indexView() {
+    public Result<IndexInfoVO> indexView() {
         IndexInfoVO indexInfoVO = new IndexInfoVO();
         Date nowDate = new Date();
         Date startDate = DateUtil.beginOfDay(nowDate);
@@ -44,10 +47,8 @@ public class IndexController {
         BigDecimal dayIncome = statisticsService.getDayOfIncome(startDate, endDate);
         indexInfoVO.setDayIncome(dayIncome.add(indexInfoVO.getDayPrintfIncome()));
         // 今日支出
-         indexInfoVO.setDayPayOut(statisticsService.getDayOfPayOut(startDate, endDate));
-         Map<String, IndexInfoVO> map = new HashMap<>();
-        map.put("indexInfo", indexInfoVO);
-        return map;
+        indexInfoVO.setDayPayOut(statisticsService.getDayOfPayOut(startDate, endDate));
+        return Result.success(indexInfoVO);
     }
 
 }
