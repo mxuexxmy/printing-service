@@ -77,6 +77,7 @@ public class TbAccountBookController {
         return Result.fail("序号" + id + "的账单删除失败!", false);
     }
 
+    @ApiOperation(value = "分页查询")
     @GetMapping("/page")
     public PageInfo<AccountVO> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
                                     @RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
