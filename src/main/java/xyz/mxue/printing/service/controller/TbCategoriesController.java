@@ -1,6 +1,8 @@
 package xyz.mxue.printing.service.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import xyz.mxue.printing.service.common.model.PageInfo;
@@ -12,8 +14,6 @@ import xyz.mxue.printing.service.service.TbCategoriesService;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -25,6 +25,7 @@ import java.util.Objects;
  * @author mxuexxmy
  * @since 2021-03-14
  */
+@Api(tags = "账单分类管理")
 @RestController
 @RequestMapping("/printing/tb-categories")
 public class TbCategoriesController {
@@ -35,8 +36,9 @@ public class TbCategoriesController {
     @Resource
     private TbAccountBookService accountBookService;
 
+    @ApiOperation(value = "保存分类")
     @PostMapping("save")
-    public Result saveCategories(@RequestBody TbCategories tbCategories) {
+    public Result<Boolean> saveCategories(@RequestBody TbCategories tbCategories) {
 
         if (tbCategories.getName().isEmpty()) {
             return Result.fail("类别不能为空！");
@@ -57,22 +59,23 @@ public class TbCategoriesController {
         return save ? Result.success("添加类别成功！") : Result.fail("添加类别失败！");
     }
 
+    @ApiOperation(value = "查询更新的类型数据")
     @GetMapping("update/{id}")
-    public Map<String, TbCategories> update(@PathVariable Long id) {
-        Map<String, TbCategories> map = new HashMap<>();
-        map.put("categories", categoriesService.getById(id));
-        return map;
+    public Result<TbCategories> update(@PathVariable Long id) {
+        return Result.success(categoriesService.getById(id));
     }
 
+    @ApiOperation(value = "保存类别")
     @PostMapping("saveUpdate")
-    public Result saveUpdate(@RequestBody TbCategories tbCategories) {
+    public Result<Boolean> saveUpdate(@RequestBody TbCategories tbCategories) {
         tbCategories.setUpdateTime(new Date());
         boolean b = categoriesService.saveOrUpdate(tbCategories);
         return b ? Result.success("修改类别成功！") : Result.fail("修改类别失败，请重修修改！");
     }
 
+    @ApiOperation(value = "删除类别")
     @GetMapping("delete/{id}")
-    public Result deleteOrder(@PathVariable Long id, ModelMap map) {
+    public Result<Boolean> delete(@PathVariable Long id, ModelMap map) {
         QueryWrapper<TbAccountBook> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("categories_id", id);
         long count = accountBookService.count(queryWrapper);
@@ -86,6 +89,7 @@ public class TbCategoriesController {
         return Result.fail("序号" + id + "的类别删除失败!");
     }
 
+    @ApiOperation(value = "分页查询")
     @GetMapping("page")
     public PageInfo<TbCategories> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
                                        @RequestParam(value = "start", required = false, defaultValue = "0")Integer start,
