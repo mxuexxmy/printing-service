@@ -3,6 +3,8 @@ package xyz.mxue.printing.service.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import xyz.mxue.printing.service.common.enums.OrderStatusEnum;
@@ -10,6 +12,7 @@ import xyz.mxue.printing.service.common.model.PageInfo;
 import xyz.mxue.printing.service.common.model.Result;
 import xyz.mxue.printing.service.entity.TbPrintOrder;
 import xyz.mxue.printing.service.entity.TbPrintfInfo;
+import xyz.mxue.printing.service.entity.vo.PrintOrderDetailVO;
 import xyz.mxue.printing.service.entity.dto.PrintfInfoDTO;
 import xyz.mxue.printing.service.entity.dto.PrintfOrderInfoDTO;
 import xyz.mxue.printing.service.entity.vo.PrintfNumberInfoVO;
@@ -28,6 +31,7 @@ import java.util.*;
  * @author mxuexxmy
  * @since 2020-12-06
  */
+@Api(tags = "打印订单管理")
 @RestController
 @RequestMapping("/printing/tb-print-order")
 public class TbPrintOrderController {
@@ -35,15 +39,15 @@ public class TbPrintOrderController {
     // 双面
     private static final Integer DOUBLE = 2;
 
-
     @Resource
     private TbPrintOrderService orderService;
 
     @Resource
     private TbPrintfInfoService printfInfoService;
 
+    @ApiOperation(value = "添加打印计算")
     @PostMapping(value = "/calculate")
-    public Result calculate(@RequestBody PrintfOrderInfoDTO printfOrderInfoDTO) {
+    public Result<Boolean> calculate(@RequestBody PrintfOrderInfoDTO printfOrderInfoDTO) {
         if (StrUtil.isNotBlank(printfOrderInfoDTO.getUserName())) {
             return Result.fail("请输入姓名！");
         }
@@ -55,16 +59,16 @@ public class TbPrintOrderController {
         // 检查订单详细信息是否有为空
         String printfInfoTips = checkPrintfInfo(printfInfoList);
 
-        if (!printfInfoTips.isEmpty()) {
-            return Result.fail(printfInfoTips);
+        if (StrUtil.isNotBlank(printfInfoTips)) {
+            return Result.fail(printfInfoTips, false);
         }
         // 计算价格
         tbPrintOrder.setTotalAmount(calculationTotalAmount(printfInfoList));
 
         boolean save = orderService.saveOrderInfoAndPrintfInfo(tbPrintOrder, printfInfoList);
 
-        return save ? Result.success("添加打印录入成功， 总价格为：" + tbPrintOrder.getTotalAmount() + "元!")
-                : Result.fail("添加打印录入失败，请重新录入！");
+        return save ? Result.success("添加打印录入成功， 总价格为：" + tbPrintOrder.getTotalAmount() + "元!", true)
+                : Result.fail("添加打印录入失败，请重新录入！", false);
     }
 
     // 计算总价格
@@ -89,13 +93,13 @@ public class TbPrintOrderController {
     private String checkPrintfInfo(List<TbPrintfInfo> printfInfoList) {
         String tips = "";
         for (TbPrintfInfo printfInfo : printfInfoList) {
-            if (printfInfo.getPagesNumber() == null) {
+            if (Objects.nonNull(printfInfo.getPagesNumber())) {
                 tips = "打印页数不能为空！";
             }
-            if (printfInfo.getPrintfNumber() == null) {
+            if (Objects.nonNull(printfInfo.getPrintfNumber())) {
                 tips = "打印份数不能为空！";
             }
-            if (printfInfo.getAmount() == null) {
+            if (Objects.nonNull(printfInfo.getAmount())) {
                 tips = "价格不能为空！";
             }
         }
@@ -146,8 +150,9 @@ public class TbPrintOrderController {
         return tbPrintOrder;
     }
 
+    @ApiOperation(value = "添加打印")
     @PostMapping(value = "/add")
-    public Result addPrintingOrder(@RequestBody PrintfOrderInfoDTO printfOrderInfoDTO) {
+    public Result<Boolean> addPrintingOrder(@RequestBody PrintfOrderInfoDTO printfOrderInfoDTO) {
         System.out.println(printfOrderInfoDTO);
 
         if (printfOrderInfoDTO.getUserName().isEmpty()) {
@@ -177,15 +182,16 @@ public class TbPrintOrderController {
     }
 
     @GetMapping("show/{id}")
-    public Map<String, Object> orderDetail(@PathVariable Long id) {
+    public Result<PrintOrderDetailVO> orderDetail(@PathVariable Long id) {
         Map<String, Object> map = new HashMap<>();
         // 订单
         TbPrintOrder order = orderService.getById(id);
         // 份数详情
         List<TbPrintfInfo> printfInfoList = printfInfoService.queryPrintfInfos(order.getId());
-        map.put("order", order);
-        map.put("printfInfos", convertSingleAndDoubleSidedName(printfInfoList));
-        return map;
+        PrintOrderDetailVO printOrderDetailVO = new PrintOrderDetailVO();
+        printOrderDetailVO.setOrder(order);
+        printOrderDetailVO.setPrintfInfos(convertSingleAndDoubleSidedName(printfInfoList));
+        return Result.success(printOrderDetailVO);
     }
 
     // 转换单双面名称
@@ -206,8 +212,9 @@ public class TbPrintOrderController {
         return printfNumberInfoVOS;
     }
 
+    @ApiOperation(value = "确认订单")
     @GetMapping("confirm/{id}")
-    public Result confirmOrder(@PathVariable Long id) {
+    public Result<Boolean> confirmOrder(@PathVariable Long id) {
 
         TbPrintOrder tbPrintOrder = orderService.getById(id);
         if (tbPrintOrder.getOrderStatus().equals(OrderStatusEnum.COMPLETE.getDesc())) {
@@ -225,8 +232,9 @@ public class TbPrintOrderController {
         return Result.fail("订单确认失败，请稍后再试！");
     }
 
+    @ApiOperation(value = "删除订单")
     @GetMapping("delete/{id}")
-    public Result deleteOrder(@PathVariable Long id, ModelMap map) {
+    public Result<Boolean> deleteOrder(@PathVariable Long id, ModelMap map) {
         // 先删除打印详情
         QueryWrapper<TbPrintfInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("order_id", id);
@@ -242,6 +250,7 @@ public class TbPrintOrderController {
         return Result.fail("序号" + id + "的打印记录删除失败!");
     }
 
+    @ApiOperation(value = "分页查询")
     @GetMapping("/page")
     public PageInfo<TbPrintOrder> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
                                        @RequestParam(value = "start", required = false, defaultValue = "0")Integer start,

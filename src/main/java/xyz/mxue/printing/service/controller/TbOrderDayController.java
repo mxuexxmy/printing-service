@@ -1,6 +1,8 @@
 package xyz.mxue.printing.service.controller;
 
 import cn.hutool.core.date.DateUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import xyz.mxue.printing.service.common.model.PageInfo;
 import xyz.mxue.printing.service.common.model.Result;
@@ -17,6 +19,7 @@ import javax.annotation.Resource;
  * @author mxuexxmy
  * @since 2020-12-07
  */
+@Api(tags = "日记录管理")
 @RestController
 @RequestMapping("/printing/tb-order-day")
 public class TbOrderDayController {
@@ -24,13 +27,15 @@ public class TbOrderDayController {
     @Resource
     private TbOrderDayService dayService;
 
+    @ApiOperation(value = "更新日记录")
     @GetMapping("update/{id}")
-    public Result update(@PathVariable Long id) {
+    public Result<Boolean> update(@PathVariable Long id) {
         TbOrderDay orderDay = dayService.getById(id);
         String message = dayService.dayRecord(orderDay.getStatsDay());
         return Result.success(DateUtil.format(orderDay.getStatsDay(), "yyyy-MM-dd") + "的" + message);
     }
 
+    @ApiOperation(value = "分页查询")
     @GetMapping("/page")
     public PageInfo<TbOrderDay> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
                                      @RequestParam(value = "start", required = false, defaultValue = "0")Integer start,

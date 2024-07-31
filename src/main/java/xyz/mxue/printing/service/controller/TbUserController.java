@@ -1,18 +1,18 @@
 package xyz.mxue.printing.service.controller;
 
 
-import org.springframework.ui.ModelMap;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import xyz.mxue.printing.service.common.model.Result;
 import xyz.mxue.printing.service.entity.TbUser;
 import xyz.mxue.printing.service.entity.dto.PasswordDTO;
+import xyz.mxue.printing.service.entity.vo.UserVO;
 import xyz.mxue.printing.service.service.TbUserService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -23,6 +23,7 @@ import java.util.Map;
  * @author mxuexxmy
  * @since 2020-12-08
  */
+@Api(tags = "用户管理")
 @RestController
 @RequestMapping("/printing/tb-user")
 public class TbUserController {
@@ -31,15 +32,15 @@ public class TbUserController {
     private TbUserService userService;
 
     @GetMapping("profile")
-    public Map<String, TbUser> profile(HttpServletRequest request) {
-        Map<String, TbUser> map = new HashMap<>();
+    public Result<UserVO> profile(HttpServletRequest request) {
         TbUser tbUser = (TbUser) request.getSession().getAttribute("user");
-        map.put("tbUser", tbUser);
-        return map;
+        UserVO userVO = new UserVO();
+        userVO.setTbUser(tbUser);
+        return Result.success(userVO);
     }
 
     @PostMapping("update")
-    public Result profileUpdate(@RequestBody TbUser tbUser, HttpServletRequest request) {
+    public Result<Boolean> profileUpdate(@RequestBody TbUser tbUser, HttpServletRequest request) {
         TbUser tbUser1 = (TbUser) request.getSession().getAttribute("user");
         tbUser1.setUserName(tbUser.getUserName());
         tbUser1.setAddress(tbUser.getAddress());
@@ -55,8 +56,9 @@ public class TbUserController {
      * @param request
      * @return
      */
+    @ApiOperation(value = "修改个人密码")
     @PostMapping("/password")
-    public Result updatePassword(@RequestBody PasswordDTO passwordDTO, HttpServletRequest request) {
+    public Result<Boolean> updatePassword(@RequestBody PasswordDTO passwordDTO, HttpServletRequest request) {
         System.out.println(passwordDTO);
         TbUser tbUser = (TbUser) request.getSession().getAttribute("user");
         // 查询原密码是否符合

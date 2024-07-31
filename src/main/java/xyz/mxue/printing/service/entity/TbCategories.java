@@ -64,7 +64,7 @@ public class TbCategories implements Serializable {
      * 日期，虚假字段
      */
     @TableField(exist = false)
-    @ApiModelProperty(value = "日期，虚假字段")
+    @ApiModelProperty(value = "日期，虚假字段，前端展示")
     private String flagPermDate;
 
 

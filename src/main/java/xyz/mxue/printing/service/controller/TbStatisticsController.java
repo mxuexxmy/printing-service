@@ -1,7 +1,6 @@
 package xyz.mxue.printing.service.controller;
 
-
-import org.springframework.web.bind.annotation.GetMapping;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author mxuexxmy
  * @since 2021-03-14
  */
+@Api(tags = "统计盈亏管理")
 @RestController
 @RequestMapping("/printing/tb-statistics")
 public class TbStatisticsController {

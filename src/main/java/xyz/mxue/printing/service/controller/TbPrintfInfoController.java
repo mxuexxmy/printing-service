@@ -1,6 +1,6 @@
 package xyz.mxue.printing.service.controller;
 
-
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author mxuexxmy
  * @since 2021-03-23
  */
+@Api(tags = "打印信息管理")
 @RestController
 @RequestMapping("/printing/tb-printf-info")
 public class TbPrintfInfoController {
