@@ -181,6 +181,7 @@ public class TbPrintOrderController {
 
     }
 
+    @ApiOperation(value = "打印订单详情")
     @GetMapping("show/{id}")
     public Result<PrintOrderDetailVO> orderDetail(@PathVariable Long id) {
         Map<String, Object> map = new HashMap<>();
@@ -220,6 +221,7 @@ public class TbPrintOrderController {
         if (tbPrintOrder.getOrderStatus().equals(OrderStatusEnum.COMPLETE.getDesc())) {
             return Result.fail(tbPrintOrder.getUserName() + "的订单已确认，无需再更改!");
         }
+
         tbPrintOrder.setOrderStatus(OrderStatusEnum.COMPLETE.getDesc());
         tbPrintOrder.setUpdateTime(new Date());
         boolean b = orderService.saveOrUpdate(tbPrintOrder);

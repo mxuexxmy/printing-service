@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * @author mxuexxmy
- * @date 12/7/2020$ 10:49 PM$
+ * @since 1.0.0
  */
 @Getter
 public enum OrderStatusEnum implements Serializable {

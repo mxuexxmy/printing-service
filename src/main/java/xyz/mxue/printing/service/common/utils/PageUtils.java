@@ -2,7 +2,7 @@ package xyz.mxue.printing.service.common.utils;
 
 /**
  * @author mxuexxmy
- * @date 3/25/2021$ 10:14 PM$
+ * @since 1.0.0
  */
 public class PageUtils {
 

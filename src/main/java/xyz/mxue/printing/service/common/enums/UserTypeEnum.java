@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * @author mxuexxmy
- * @date 12/8/2020$ 12:41 AM$
+ * @since 1.0.0
  */
 @Getter
 public enum UserTypeEnum implements Serializable {

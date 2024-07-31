@@ -31,6 +31,7 @@ public class TbUserController {
     @Resource
     private TbUserService userService;
 
+    @ApiOperation(value = "个人信息")
     @GetMapping("profile")
     public Result<UserVO> profile(HttpServletRequest request) {
         TbUser tbUser = (TbUser) request.getSession().getAttribute("user");
@@ -39,6 +40,7 @@ public class TbUserController {
         return Result.success(userVO);
     }
 
+    @ApiOperation(value = "更新个人信息")
     @PostMapping("update")
     public Result<Boolean> profileUpdate(@RequestBody TbUser tbUser, HttpServletRequest request) {
         TbUser tbUser1 = (TbUser) request.getSession().getAttribute("user");
