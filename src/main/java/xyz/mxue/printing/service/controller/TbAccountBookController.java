@@ -1,5 +1,6 @@
 package xyz.mxue.printing.service.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.ui.ModelMap;
@@ -34,18 +35,21 @@ public class TbAccountBookController {
 
     @ApiOperation(value = "记账分类")
     @GetMapping("/")
+    @SaCheckLogin
     public Result<List<CategoriesNameDTO>> index() {
         return Result.success(accountBookService.categoriesNames());
     }
 
     @ApiOperation(value = "添加分类")
     @GetMapping("/add-account")
+    @SaCheckLogin
     public Result<List<CategoriesNameDTO>> addAccount() {
         return Result.success(accountBookService.categoriesNames());
     }
 
     @ApiOperation(value = "保持账单")
     @PostMapping("/save-account")
+    @SaCheckLogin
     public Result<Boolean> saveAccount(@RequestBody TbAccountBook tbAccountBook) {
         tbAccountBook.setCreateTime(new Date());
         tbAccountBook.setUpdateTime(new Date());
@@ -55,12 +59,14 @@ public class TbAccountBookController {
 
     @ApiOperation(value = "查询需要更新的账单")
     @GetMapping("/update/{id}")
+    @SaCheckLogin
     public Result<AccountUpdateDTO> update(@PathVariable Long id) {
         return Result.success(accountBookService.accountUpdate(id));
     }
 
     @ApiOperation(value = "更新账单")
     @PostMapping("/save-update")
+    @SaCheckLogin
     public Result<Boolean> saveUpdate(@RequestBody TbAccountBook tbAccountBook) {
         tbAccountBook.setUpdateTime(new Date());
         boolean b = accountBookService.saveOrUpdate(tbAccountBook);
@@ -69,6 +75,7 @@ public class TbAccountBookController {
 
     @ApiOperation(value = "删除账单")
     @GetMapping("/delete/{id}")
+    @SaCheckLogin
     public Result<Boolean> deleteOrder(@PathVariable Long id) {
         boolean b = accountBookService.removeById(id);
         if (b) {
@@ -79,6 +86,7 @@ public class TbAccountBookController {
 
     @ApiOperation(value = "分页查询")
     @GetMapping("/page")
+    @SaCheckLogin
     public PageInfo<AccountVO> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
                                     @RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                     @RequestParam(value = "length", required = false, defaultValue = "10") Integer length,

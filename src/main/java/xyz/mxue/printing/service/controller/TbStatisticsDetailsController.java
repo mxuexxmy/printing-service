@@ -1,5 +1,6 @@
 package xyz.mxue.printing.service.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.ui.ModelMap;
@@ -36,6 +37,7 @@ public class TbStatisticsDetailsController {
 
     @ApiOperation(value = "月统计")
     @GetMapping("/month")
+    @SaCheckLogin
     private Result<StatisticsDetailsMothVO> month() {
         StatisticsDetailsMothVO statisticsDetailsMothVO = new StatisticsDetailsMothVO();
         statisticsDetailsMothVO.setStatisticsTimes(statisticsDetailsService.statisticsTimeShowOfMonth(new Date()));
@@ -44,6 +46,7 @@ public class TbStatisticsDetailsController {
 
     @ApiOperation(value = "年统计")
     @GetMapping("/year")
+    @SaCheckLogin
     private Result<StatisticsDetailsYearVO> year() {
         StatisticsDetailsYearVO statisticsDetailsYearVO = new StatisticsDetailsYearVO();
         statisticsDetailsYearVO.setStatisticsTimes(statisticsDetailsService.statisticsTimeShowOfYear(new Date()));

@@ -14,12 +14,15 @@ spring:
     active: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/printing-service?useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://127.0.0.1:3306/printing?useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: mysql_n7rYG5
   jackson:
     date-format: yyyy-MM-dd HH:mm
     time-zone: GMT+8
+
+knife4j:
+  enable: true
 
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
@@ -36,4 +39,4 @@ sa-token:
   # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
   token-style: uuid
   # 是否输出操作日志
-  is-log: false
+  is-log: true

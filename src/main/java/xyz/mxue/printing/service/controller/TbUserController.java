@@ -1,6 +1,7 @@
 package xyz.mxue.printing.service.controller;
 
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.DigestUtils;
@@ -33,6 +34,7 @@ public class TbUserController {
 
     @ApiOperation(value = "个人信息")
     @GetMapping("profile")
+    @SaCheckLogin
     public Result<UserVO> profile(HttpServletRequest request) {
         TbUser tbUser = (TbUser) request.getSession().getAttribute("user");
         UserVO userVO = new UserVO();
@@ -42,6 +44,7 @@ public class TbUserController {
 
     @ApiOperation(value = "更新个人信息")
     @PostMapping("update")
+    @SaCheckLogin
     public Result<Boolean> profileUpdate(@RequestBody TbUser tbUser, HttpServletRequest request) {
         TbUser tbUser1 = (TbUser) request.getSession().getAttribute("user");
         tbUser1.setUserName(tbUser.getUserName());
@@ -60,8 +63,8 @@ public class TbUserController {
      */
     @ApiOperation(value = "修改个人密码")
     @PostMapping("/password")
+    @SaCheckLogin
     public Result<Boolean> updatePassword(@RequestBody PasswordDTO passwordDTO, HttpServletRequest request) {
-        System.out.println(passwordDTO);
         TbUser tbUser = (TbUser) request.getSession().getAttribute("user");
         // 查询原密码是否符合
         if (tbUser.getPassword().equals(DigestUtils.md5DigestAsHex(passwordDTO.getOldPassword().getBytes()))) {

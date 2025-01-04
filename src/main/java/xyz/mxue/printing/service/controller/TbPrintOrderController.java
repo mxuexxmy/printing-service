@@ -1,6 +1,7 @@
 package xyz.mxue.printing.service.controller;
 
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
@@ -47,6 +48,7 @@ public class TbPrintOrderController {
 
     @ApiOperation(value = "添加打印计算")
     @PostMapping(value = "/calculate")
+    @SaCheckLogin
     public Result<Boolean> calculate(@RequestBody PrintfOrderInfoDTO printfOrderInfoDTO) {
         if (StrUtil.isNotBlank(printfOrderInfoDTO.getUserName())) {
             return Result.fail("请输入姓名！");
@@ -152,6 +154,7 @@ public class TbPrintOrderController {
 
     @ApiOperation(value = "添加打印")
     @PostMapping(value = "/add")
+    @SaCheckLogin
     public Result<Boolean> addPrintingOrder(@RequestBody PrintfOrderInfoDTO printfOrderInfoDTO) {
         System.out.println(printfOrderInfoDTO);
 
@@ -183,6 +186,7 @@ public class TbPrintOrderController {
 
     @ApiOperation(value = "打印订单详情")
     @GetMapping("show/{id}")
+    @SaCheckLogin
     public Result<PrintOrderDetailVO> orderDetail(@PathVariable Long id) {
         Map<String, Object> map = new HashMap<>();
         // 订单
@@ -215,6 +219,7 @@ public class TbPrintOrderController {
 
     @ApiOperation(value = "确认订单")
     @GetMapping("confirm/{id}")
+    @SaCheckLogin
     public Result<Boolean> confirmOrder(@PathVariable Long id) {
 
         TbPrintOrder tbPrintOrder = orderService.getById(id);
@@ -236,6 +241,7 @@ public class TbPrintOrderController {
 
     @ApiOperation(value = "删除订单")
     @GetMapping("delete/{id}")
+    @SaCheckLogin
     public Result<Boolean> deleteOrder(@PathVariable Long id, ModelMap map) {
         // 先删除打印详情
         QueryWrapper<TbPrintfInfo> queryWrapper = new QueryWrapper<>();
@@ -254,6 +260,7 @@ public class TbPrintOrderController {
 
     @ApiOperation(value = "分页查询")
     @GetMapping("/page")
+    @SaCheckLogin
     public PageInfo<TbPrintOrder> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
                                        @RequestParam(value = "start", required = false, defaultValue = "0")Integer start,
                                        @RequestParam(value = "length", required = false, defaultValue = "10") Integer length,

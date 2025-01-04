@@ -1,5 +1,6 @@
 package xyz.mxue.printing.service.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.hutool.core.date.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +35,7 @@ public class IndexController {
 
     @ApiOperation(value = "首页汇总")
     @GetMapping("/index")
+    @SaCheckLogin
     public Result<IndexInfoVO> indexView() {
         IndexInfoVO indexInfoVO = new IndexInfoVO();
         Date nowDate = new Date();

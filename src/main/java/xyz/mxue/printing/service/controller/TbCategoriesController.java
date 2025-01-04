@@ -1,5 +1,6 @@
 package xyz.mxue.printing.service.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +39,7 @@ public class TbCategoriesController {
 
     @ApiOperation(value = "保存分类")
     @PostMapping("save")
+    @SaCheckLogin
     public Result<Boolean> saveCategories(@RequestBody TbCategories tbCategories) {
 
         if (tbCategories.getName().isEmpty()) {
@@ -61,12 +63,14 @@ public class TbCategoriesController {
 
     @ApiOperation(value = "查询更新的类型数据")
     @GetMapping("update/{id}")
+    @SaCheckLogin
     public Result<TbCategories> update(@PathVariable Long id) {
         return Result.success(categoriesService.getById(id));
     }
 
     @ApiOperation(value = "保存类别")
     @PostMapping("saveUpdate")
+    @SaCheckLogin
     public Result<Boolean> saveUpdate(@RequestBody TbCategories tbCategories) {
         tbCategories.setUpdateTime(new Date());
         boolean b = categoriesService.saveOrUpdate(tbCategories);
@@ -75,6 +79,7 @@ public class TbCategoriesController {
 
     @ApiOperation(value = "删除类别")
     @GetMapping("delete/{id}")
+    @SaCheckLogin
     public Result<Boolean> delete(@PathVariable Long id, ModelMap map) {
         QueryWrapper<TbAccountBook> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("categories_id", id);
@@ -91,6 +96,7 @@ public class TbCategoriesController {
 
     @ApiOperation(value = "分页查询")
     @GetMapping("page")
+    @SaCheckLogin
     public PageInfo<TbCategories> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
                                        @RequestParam(value = "start", required = false, defaultValue = "0")Integer start,
                                        @RequestParam(value = "length", required = false, defaultValue = "10") Integer length,
