@@ -50,7 +50,7 @@ public class TbPrintOrderController {
     @PostMapping(value = "/calculate")
     @SaCheckLogin
     public Result<Boolean> calculate(@RequestBody PrintfOrderInfoDTO printfOrderInfoDTO) {
-        if (StrUtil.isNotBlank(printfOrderInfoDTO.getUserName())) {
+        if (StrUtil.isBlank(printfOrderInfoDTO.getUserName())) {
             return Result.fail("请输入姓名！");
         }
         // 分离订单
@@ -156,9 +156,7 @@ public class TbPrintOrderController {
     @PostMapping(value = "/add")
     @SaCheckLogin
     public Result<Boolean> addPrintingOrder(@RequestBody PrintfOrderInfoDTO printfOrderInfoDTO) {
-        System.out.println(printfOrderInfoDTO);
-
-        if (printfOrderInfoDTO.getUserName().isEmpty()) {
+        if (StrUtil.isBlank(printfOrderInfoDTO.getUserName())) {
             return Result.fail("请输入姓名！");
         }
 

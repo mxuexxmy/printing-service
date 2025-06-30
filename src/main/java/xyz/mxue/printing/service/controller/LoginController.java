@@ -76,6 +76,14 @@ public class LoginController {
         }
     }
 
+    @ApiOperation(value = "根据用户ID获取用户名")
+    @GetMapping("/username/{userId}")
+    @SaCheckLogin
+    public Result<String> getUserNameById(@PathVariable("userId") String userId) {
+        TbUser user = userService.getById(userId);
+        return Result.success(user.getUserName());
+    }
+
     @ApiOperation(value = "退出登录")
     @SaCheckLogin
     @GetMapping("/logout")
