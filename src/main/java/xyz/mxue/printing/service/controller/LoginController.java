@@ -8,6 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import com.wf.captcha.base.Captcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -30,6 +31,7 @@ import java.util.Objects;
  * @author mxuexxmy
  * @since 1.0.0
  */
+@Slf4j
 @Api(tags = "登录管理")
 @RestController
 @RequestMapping
@@ -112,6 +114,8 @@ public class LoginController {
             captchaValue = captchaValue.split("\\.")[0];
         }
         // 保持到缓存
+        log.info("captchaValue:{}",captchaValue);
+        log.info("uuid:{}",uuid);
         cacheService.putValue(CacheConstant.LOGIN_CODE, uuid, captchaValue);
 
         CodeDataVO codeDataVO = new CodeDataVO();

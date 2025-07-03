@@ -95,13 +95,13 @@ public class TbPrintOrderController {
     private String checkPrintfInfo(List<TbPrintfInfo> printfInfoList) {
         String tips = "";
         for (TbPrintfInfo printfInfo : printfInfoList) {
-            if (Objects.nonNull(printfInfo.getPagesNumber())) {
+            if (Objects.isNull(printfInfo.getPagesNumber())) {
                 tips = "打印页数不能为空！";
             }
-            if (Objects.nonNull(printfInfo.getPrintfNumber())) {
+            if (Objects.isNull(printfInfo.getPrintfNumber())) {
                 tips = "打印份数不能为空！";
             }
-            if (Objects.nonNull(printfInfo.getAmount())) {
+            if (Objects.isNull(printfInfo.getAmount())) {
                 tips = "价格不能为空！";
             }
         }
@@ -183,7 +183,7 @@ public class TbPrintOrderController {
     }
 
     @ApiOperation(value = "打印订单详情")
-    @GetMapping("show/{id}")
+    @GetMapping("/show/{id}")
     @SaCheckLogin
     public Result<PrintOrderDetailVO> orderDetail(@PathVariable Long id) {
         Map<String, Object> map = new HashMap<>();
@@ -216,7 +216,7 @@ public class TbPrintOrderController {
     }
 
     @ApiOperation(value = "确认订单")
-    @GetMapping("confirm/{id}")
+    @GetMapping("/confirm/{id}")
     @SaCheckLogin
     public Result<Boolean> confirmOrder(@PathVariable Long id) {
 
@@ -238,7 +238,7 @@ public class TbPrintOrderController {
     }
 
     @ApiOperation(value = "删除订单")
-    @GetMapping("delete/{id}")
+    @GetMapping("/delete/{id}")
     @SaCheckLogin
     public Result<Boolean> deleteOrder(@PathVariable Long id, ModelMap map) {
         // 先删除打印详情
