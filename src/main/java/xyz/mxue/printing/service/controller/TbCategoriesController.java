@@ -97,13 +97,13 @@ public class TbCategoriesController {
     @ApiOperation(value = "分页查询")
     @GetMapping("page")
     @SaCheckLogin
-    public PageInfo<TbCategories> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
+    public Result<PageInfo<TbCategories>> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
                                        @RequestParam(value = "start", required = false, defaultValue = "0")Integer start,
                                        @RequestParam(value = "length", required = false, defaultValue = "10") Integer length,
                                        TbCategories tbCategories) {
 
         // 封装 Datatables 需要的结果
-        return categoriesService.page(start, length, draw, tbCategories);
+        return Result.success(categoriesService.page(start, length, draw, tbCategories));
     }
 
 }

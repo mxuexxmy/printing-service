@@ -87,7 +87,7 @@ public class TbAccountBookController {
     @ApiOperation(value = "分页查询")
     @GetMapping("/page")
     @SaCheckLogin
-    public PageInfo<AccountVO> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
+    public Result<PageInfo<AccountVO>> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
                                     @RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                     @RequestParam(value = "length", required = false, defaultValue = "10") Integer length,
                                     TbAccountBook tbAccountBook) {
@@ -111,7 +111,7 @@ public class TbAccountBookController {
         }
 
         // 封装 Datatables 需要的结果
-        return accountBookService.page(start, length, draw, tbAccountBook);
+        return Result.success(accountBookService.page(start, length, draw, tbAccountBook));
     }
 
 }

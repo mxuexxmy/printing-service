@@ -40,14 +40,14 @@ public class TbOrderDayController {
     @ApiOperation(value = "分页查询")
     @GetMapping("/page")
     @SaCheckLogin
-    public PageInfo<TbOrderDay> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
+    public Result<PageInfo<TbOrderDay>> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
                                      @RequestParam(value = "start", required = false, defaultValue = "0")Integer start,
                                      @RequestParam(value = "length", required = false, defaultValue = "10") Integer length,
                                      TbOrderDay tbOrderDay) {
 
         // 封装 Datatables 需要的结果
 
-        return dayService.page(start, length, draw, tbOrderDay);
+        return Result.success(dayService.page(start, length, draw, tbOrderDay));
     }
 
 }

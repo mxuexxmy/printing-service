@@ -259,7 +259,7 @@ public class TbPrintOrderController {
     @ApiOperation(value = "分页查询")
     @GetMapping("/page")
     @SaCheckLogin
-    public PageInfo<TbPrintOrder> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
+    public Result<PageInfo<TbPrintOrder>> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
                                        @RequestParam(value = "start", required = false, defaultValue = "0")Integer start,
                                        @RequestParam(value = "length", required = false, defaultValue = "10") Integer length,
                                        TbPrintOrder tbPrintOrder) {
@@ -274,7 +274,7 @@ public class TbPrintOrderController {
 
         // 封装 Datatables 需要的结果
 
-        return orderService.page(start, length, draw, tbPrintOrder);
+        return Result.success(orderService.page(start, length, draw, tbPrintOrder));
     }
 
 

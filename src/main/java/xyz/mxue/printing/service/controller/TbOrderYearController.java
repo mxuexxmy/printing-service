@@ -41,12 +41,12 @@ public class TbOrderYearController {
     @ApiOperation(value = "分页查询")
     @GetMapping("/page")
     @SaCheckLogin
-    public PageInfo<TbOrderYear> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
+    public Result<PageInfo<TbOrderYear>> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
                                       @RequestParam(value = "start", required = false, defaultValue = "0")Integer start,
                                       @RequestParam(value = "length", required = false, defaultValue = "10") Integer length,
                                       TbOrderYear tbOrderYear) {
 
-        return yearService.page(start, length, draw, tbOrderYear);
+        return Result.success(yearService.page(start, length, draw, tbOrderYear));
     }
 
 

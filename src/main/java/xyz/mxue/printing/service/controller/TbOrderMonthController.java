@@ -46,11 +46,11 @@ public class TbOrderMonthController {
     @ApiOperation(value = "分页查询")
     @GetMapping("/page")
     @SaCheckLogin
-    public PageInfo<TbOrderMonth> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
+    public Result<PageInfo<TbOrderMonth>> page(@RequestParam(value = "draw", required = false, defaultValue = "0") Integer draw,
                                        @RequestParam(value = "start", required = false, defaultValue = "0")Integer start,
                                        @RequestParam(value = "length", required = false, defaultValue = "10") Integer length,
                                        TbOrderMonth tbOrderMonth) {
-        return monthService.page(start, length, draw, tbOrderMonth);
+        return Result.success(monthService.page(start, length, draw, tbOrderMonth));
     }
 
 }
